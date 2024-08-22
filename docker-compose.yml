@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: carne-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www
+    networks:
+      - carne-api-network
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: 1
+    restart: always  # Adiciona reinício automático em caso de falhas
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    container_name: carne-db
+    environment:
+      POSTGRES_DB: carne
+      POSTGRES_USER: carne_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - carne-api-network
+
+networks:
+  carne-api-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

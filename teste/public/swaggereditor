@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  title: API de Carnês
+  version: 1.0.0
+  description: Documentação da API para gerenciamento de carnês
+paths:
+  /carne:
+    post:
+      summary: Criar Carnê
+      tags:
+        - Carnê
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                valor_total:
+                  type: number
+                qtd_parcelas:
+                  type: integer
+                data_primeiro_vencimento:
+                  type: string
+                  format: date
+                periodicidade:
+                  type: string
+                valor_entrada:
+                  type: number
+      responses:
+        '200':
+          description: Carnê criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                  valor_entrada:
+                    type: number
+                  parcelas:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data_vencimento:
+                          type: string
+                          format: date
+                        valor:
+                          type: number
+                        numero:
+                          type: integer
+                        entrada:
+                          type: boolean
+  /carne/{id}/parcelas:
+    get:
+      summary: Recuperar Parcelas
+      tags:
+        - Carnê
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parcelas:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data_vencimento:
+                          type: string
+                          format: date
+                        valor:
+                          type: number
+                        numero:
+                          type: integer
