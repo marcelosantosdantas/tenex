@@ -1,16 +1,45 @@
-#Comando para inciar o docker e isntalar todo o processo
+# Instruções para Configuração e Teste da API de Carnês
+
+## 1. Inicialização do Docker e Instalação do Ambiente
+
+Para iniciar o Docker e instalar todo o ambiente, execute o comando abaixo:
+
+```bash
 docker-compose up -d
+```
 
-#Após a conclusão da instalação do docker dependendo da internete poderá demorar de 3 a 5 minutos para instalação e configuração do laravel lumem
+### Observações:
+- A instalação e configuração do Laravel Lumen podem levar de 3 a 5 minutos, dependendo da velocidade da sua internet. Durante esse processo, todas as dependências serão instaladas e o ambiente será configurado automaticamente.
 
-#Quando o sistema estiver no ar o swagger deverá estar ativo para teste
-http://localhost:8000/docs
+## 2. Acesso ao Swagger para Testes
 
-#Estou utilizando o Postgre para armazenar ps cares criados para poder ser realizado as consultas
+Após a inicialização do sistema, você pode acessar a documentação do Swagger para testar a API diretamente no navegador:
 
+Swagger UI - Documentação da API: http://localhost:8000/docs
 
-#Para teste via postman pode ser importado o curl para o postman
-#CRIAR CARNE
+## 3. Banco de Dados
+
+Estamos utilizando o PostgreSQL para armazenar os carnês criados, permitindo que você realize consultas posteriormente.
+
+### Configurações de Conexão:
+Para acessar o banco de dados via DBeaver, pgAdmin, ou outro cliente de banco de dados, utilize as seguintes credenciais:
+
+```bash
+DB_CONNECTION=pgsql
+DB_HOST=db
+DB_PORT=5432
+DB_DATABASE=carne
+DB_USERNAME=carne_user
+DB_PASSWORD=secret
+```
+## 4. Testes via Postman
+
+Você pode testar as funcionalidades da API utilizando o Postman ou diretamente via cURL.
+
+### 4.1. Criar Carnê
+
+Requisição:
+```bash
 curl -X POST http://localhost:8000/carne \
 -H "Content-Type: application/json" \
 -d '{
@@ -20,16 +49,12 @@ curl -X POST http://localhost:8000/carne \
   "periodicidade": "mensal",
   "valor_entrada": 10.00
 }'
+```
+### 4.2. Consultar Parcelas
 
+Para consultar as parcelas de um carnê específico, substitua 1 pelo ID do carnê desejado:
 
-#Consulta das parcelas, para pesquisar um id em especifico mudar o numero 1 para o ID do carne registrado
+Requisição:
+```bash
 curl -X GET http://localhost:8000/carne/1/parcelas
-
-
-#Para ter acesso via DBEAVER ou admin de banco 
-DB_CONNECTION=pgsql
-DB_HOST=db
-DB_PORT=5432
-DB_DATABASE=carne
-DB_USERNAME=carne_user
-DB_PASSWORD=secret
+```
